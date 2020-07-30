@@ -1,6 +1,8 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.entity.Employee;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -8,15 +10,13 @@ public interface EmployeeService {
 
     void addEmployee(Employee employee);
 
-    List<Employee> getEmployees();
+    Page<Employee> getEmployees(Pageable pageable);
 
-    Employee getEmployeeById(int id);
+    List<Employee> getEmployeeById(int id);
 
-    void updateEmployeeById(int id, Employee employee);
+    void updateEmployee(Employee employee);
 
     void deleteEmployeeById(int id);
-
-    List<Employee> pageQueryEmployees(int page, int pageSize);
 
     List<Employee> getEmployeesByGender(String gender);
 }

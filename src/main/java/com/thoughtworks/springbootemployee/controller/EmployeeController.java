@@ -4,6 +4,9 @@ import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import com.thoughtworks.springbootemployee.service.impl.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,27 +24,22 @@ public class EmployeeController {
     }
 
     @GetMapping()
-    public List<Employee> getEmployees(
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "gender", required = false) String gender){
-        if (page != null && pageSize != null) {
-            return employeeService.pageQueryEmployees(page, pageSize);
-        }
+    public List<Employee> getEmployees(@PageableDefault Pageable pageable,
+                                       @RequestParam(value = "gender", required = false) String gender){
         if (gender != null) {
             return employeeService.getEmployeesByGender(gender);
         }
-        return employeeService.getEmployees();
+        return employeeService.getEmployees(pageable).getContent();
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable int id){
+    public List<Employee> getEmployeeById(@PathVariable int id){
         return employeeService.getEmployeeById(id);
     }
 
-    @PutMapping("/{id}")
-    public void updateEmployeeById(@PathVariable int id, @RequestBody Employee employee){
-        employeeService.updateEmployeeById(id, employee);
+    @PutMapping()
+    public void updateEmployeeById(@RequestBody Employee employee){
+        employeeService.updateEmployee(employee);
     }
 
     @DeleteMapping("/{id}")

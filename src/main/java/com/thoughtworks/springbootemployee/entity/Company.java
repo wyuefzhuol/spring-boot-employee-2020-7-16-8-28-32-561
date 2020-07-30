@@ -1,11 +1,21 @@
 package com.thoughtworks.springbootemployee.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "company")
 public class Company {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "company_id")
     private int id;
-    private String companyName;
-    private int employeesNumber;
+    private String name;
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "company_id")
     private List<Employee> employees;
 
     public int getId() {
@@ -16,20 +26,12 @@ public class Company {
         this.id = id;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getName() {
+        return name;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public int getEmployeesNumber() {
-        return employeesNumber;
-    }
-
-    public void setEmployeesNumber(int employeesNumber) {
-        this.employeesNumber = employeesNumber;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Employee> getEmployees() {
