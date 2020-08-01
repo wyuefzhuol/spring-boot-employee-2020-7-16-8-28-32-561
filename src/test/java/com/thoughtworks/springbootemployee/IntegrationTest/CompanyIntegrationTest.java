@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.IntegrationTest;
 
+import com.jayway.jsonpath.JsonPath;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -59,14 +60,13 @@ public class CompanyIntegrationTest {
     }
 
     @Test
-    void should_return_a_specific_company_when_get_specific_company_given_() {
+    void should_return_a_specific_company_when_get_specific_company_given_a_company_id() throws Exception {
         //given
-
-        //when
-
-
-        //then
-
-
+        Company company = new Company("tw");
+        companyRepository.save(company);
+        mockMvc.perform(get("/companies/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name").value("tw"));
     }
 }
