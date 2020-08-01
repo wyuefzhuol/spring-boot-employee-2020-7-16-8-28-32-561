@@ -78,4 +78,23 @@ public class EmployeeIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
     }
+
+    @Test
+    void should_return_male_employee_response_when_get_employee_by_gender_given_1male_1female_employees() throws Exception {
+        int companyId = 1;
+        String gender = "male";
+        Company company = new Company("oocl");
+        companyRepository.save(company);
+        Company companyWhichEmployeeWillJoin = companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
+        Employee maleEmployee = new Employee("Eric", "male", 18, companyWhichEmployeeWillJoin);
+        Employee femaleEmployee = new Employee("Alice", "female", 18, companyWhichEmployeeWillJoin);
+        employeeRepository.save(maleEmployee);
+        employeeRepository.save(femaleEmployee);
+        mockMvc.perform(get("/employees?gender="+gender)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("[0].name").value("Eric"))
+                .andExpect(jsonPath("[0].gender").value("male"));
+    }
 }
