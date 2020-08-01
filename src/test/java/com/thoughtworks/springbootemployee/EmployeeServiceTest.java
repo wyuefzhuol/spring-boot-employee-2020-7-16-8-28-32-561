@@ -88,7 +88,7 @@ public class EmployeeServiceTest {
         //given
         List<Employee> employees = new ArrayList<>();
         int page = 0, pageSize = 2;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < pageSize; i++) {
             employees.add(new Employee("Eric", "male", 18, null));
         }
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -96,7 +96,7 @@ public class EmployeeServiceTest {
         Mockito.when(employeeRepository.findAll(pageable)).thenReturn(employeesPage);
 
         //when
-        List<EmployeeResponse> employeeResponses = employeeService.pagingQueryEmployees2(pageable);
+        List<EmployeeResponse> employeeResponses = employeeService.pagingQueryEmployees(pageable);
 
         //then
         assertEquals(pageSize, employeeResponses.size());

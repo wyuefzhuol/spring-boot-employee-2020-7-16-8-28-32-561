@@ -44,8 +44,8 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/employees", params = {"page","size"})
-    public List<Employee> pagingQueryEmployees(@PageableDefault(size = 2) Pageable pageable, @RequestParam(defaultValue = "false", required = false) boolean unpaged) {
-        return employeeServiceImpl.pagingQueryEmployees(pageable).getContent();
+    public List<EmployeeResponse> pagingQueryEmployees(@PageableDefault(size = 2) Pageable pageable, @RequestParam(defaultValue = "false", required = false) boolean unpaged) {
+        return employeeServiceImpl.pagingQueryEmployees(pageable);
     }
 
     @GetMapping(value = "/employees", params = "gender")

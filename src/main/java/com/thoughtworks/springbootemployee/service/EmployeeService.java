@@ -21,5 +21,5 @@ public interface EmployeeService {
 
     void updateEmployees(Employee employee);
 
-    Page<Employee> pagingQueryEmployees(Pageable pageable);
+    List<EmployeeResponse> pagingQueryEmployees(Pageable pageable);
 }

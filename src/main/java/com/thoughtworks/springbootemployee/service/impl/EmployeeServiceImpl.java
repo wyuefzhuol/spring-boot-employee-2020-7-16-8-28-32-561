@@ -47,16 +47,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public Page<Employee> pagingQueryEmployees(Pageable pageable) {
-        return employeeRepository.findAll(pageable);
-    }
-
     public List<EmployeeResponse> getEmployees() {
         return employeeRepository.findAll().stream().map(employee -> {
             EmployeeResponse employeeResponse = new EmployeeResponse();
             employeeResponse.setId(employee.getId());
             employeeResponse.setName(employee.getName());
             employeeResponse.setGender(employee.getGender());
+            if (employee.getCompany() != null) {
+                employeeResponse.setCompanyName(employee.getCompany().getName());
+            }
             return employeeResponse;
         }).collect(Collectors.toList());
     }
@@ -79,7 +78,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
-    public List<EmployeeResponse> pagingQueryEmployees2(Pageable pageable) {
-        return null;
+    public List<EmployeeResponse> pagingQueryEmployees(Pageable pageable) {
+        return employeeRepository.findAll(pageable).getContent().stream().map(employee -> {
+            EmployeeResponse employeeResponse = new EmployeeResponse();
+            employeeResponse.setId(employee.getId());
+            employeeResponse.setName(employee.getName());
+            employeeResponse.setGender(employee.getGender());
+            if (employee.getCompany() != null) {
+                employeeResponse.setCompanyName(employee.getCompany().getName());
+            }
+            return employeeResponse;
+        }).collect(Collectors.toList());
     }
 }
