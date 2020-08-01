@@ -30,10 +30,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    public void updateEmployees(Employee employee) {
-        employeeRepository.save(employee);
-    }
-
     public List<EmployeeResponse> getEmployees() {
         return employeeRepository.findAll().stream().map(employee -> {
             EmployeeResponse employeeResponse = new EmployeeResponse();
@@ -56,6 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCompany(company);
         Employee employeeResult = employeeRepository.save(employee);
         EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setId(employeeResult.getId());
         employeeResponse.setName(employeeResult.getName());
         employeeResponse.setGender(employeeResult.getGender());
         employeeResponse.setCompanyName(employeeResult.getCompany().getName());
@@ -100,7 +97,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         }).collect(Collectors.toList());
     }
 
-    public EmployeeResponse updateEmployees2(EmployeeRequest employeeRequest) {
-        return null;
+    public EmployeeResponse updateEmployee(EmployeeRequest employeeRequest) {
+        Company company = companyRepository.findById(employeeRequest.getCompanyId()).orElseThrow(CompanyNotFoundException::new);
+        Employee employee = new Employee();
+        employee.setName(employeeRequest.getName());
+        employee.setGender(employeeRequest.getGender());
+        employee.setAge(employeeRequest.getAge());
+        employee.setCompany(company);
+        Employee employeeResult = employeeRepository.save(employee);
+        EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setId(employeeResult.getId());
+        employeeResponse.setName(employeeResult.getName());
+        employeeResponse.setGender(employeeResult.getGender());
+        employeeResponse.setCompanyName(employeeResult.getCompany().getName());
+        return employeeResponse;
     }
 }

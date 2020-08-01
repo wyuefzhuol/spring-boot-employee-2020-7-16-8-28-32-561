@@ -158,7 +158,7 @@ public class EmployeeServiceTest {
         Mockito.when(employeeRepository.save(any())).thenReturn(employee);
 
         //when
-        EmployeeResponse employeeResponse = employeeService.updateEmployees2(employeeRequest);
+        EmployeeResponse employeeResponse = employeeService.updateEmployee(employeeRequest);
 
         //then
         assertEquals(employeeId, employeeResponse.getId());
