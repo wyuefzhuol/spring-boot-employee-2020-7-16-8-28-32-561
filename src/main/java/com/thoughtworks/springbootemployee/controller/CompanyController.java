@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.Dto.CompanyRequest;
+import com.thoughtworks.springbootemployee.Dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.service.impl.CompanyServiceImpl;
@@ -23,8 +25,8 @@ public class CompanyController {
     }
 
     @GetMapping("/companies/{id}")
-    private Company getCompany(@PathVariable("id") int id) {
-        return companyService.getCompany(id);
+    private CompanyResponse getCompany(@PathVariable("id") int id) {
+        return companyService.getSpecifyCompany(id);
     }
 
     @GetMapping("/companies/{id}/employees")
@@ -41,14 +43,14 @@ public class CompanyController {
     }
 
     @PostMapping("/companies")
-    private void addCompany(@RequestBody() Company company) {
-        companyService.addCompany(company);
+    private CompanyResponse addCompany(@RequestBody() CompanyRequest companyRequest) {
+        return companyService.addCompany(companyRequest);
     }
 
-    @DeleteMapping("/companies/{id}")
-    private void deleteTheCompanyAllInfo(@PathVariable("id") int id) {
-        companyService.deleteTheCompanyAllInfo(id);
-    }
+//    @DeleteMapping("/companies/{id}")
+//    private void deleteTheCompanyAllInfo(@PathVariable("id") int id) {
+//        companyService.deleteTheCompanyAllInfo(id);
+//    }
 
     @PutMapping("/companies")
     public void updateCompany(@RequestBody Company company) {
