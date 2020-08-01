@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.Dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.impl.EmployeeServiceImpl;
@@ -115,5 +116,16 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(employeeId, employeeResponses.getId());
+    }
+
+    @Test
+    void should_return_employee_not_found_exception_when_get_specific_employee_given_0employee() {
+        //given
+        int employeeId = 1;
+
+        //then
+        assertThrows(EmployeeNotFoundException.class, ()-> {
+            employeeService.getSpecificEmployee(employeeId);
+        });
     }
 }
