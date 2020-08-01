@@ -14,12 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -96,5 +93,23 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("[0].name").value("Eric"))
                 .andExpect(jsonPath("[0].gender").value("male"));
+    }
+
+    @Test
+    void should_return_new_employee_with_company_oocl_when_update_employee_given_old_employee_with_company_tw() throws Exception {
+        int companyId = 1;
+        Company twCompany = new Company("tw");
+        companyRepository.save(twCompany);
+        Company ooclCompany = new Company("oocl");
+        companyRepository.save(ooclCompany);
+        Company companyWhichEmployeeWillJoin = companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
+        Employee Employee = new Employee("Eric", "male", 18, companyWhichEmployeeWillJoin);
+        employeeRepository.save(Employee);
+        mockMvc.perform(put("/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ConstantInterface.NEW_EMPLOYEE_REQUEST_JSON_PAY))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name").value("Eric"))
+                .andExpect(jsonPath("companyName").value("oocl"));
     }
 }

@@ -34,8 +34,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/employees")
-    public void updateEmployee(@RequestBody EmployeeRequest employeeRequest) {
-        employeeServiceImpl.updateEmployee(employeeRequest);
+    public EmployeeResponse updateEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        return employeeServiceImpl.updateEmployee(employeeRequest);
     }
 
     @GetMapping("/employees")
