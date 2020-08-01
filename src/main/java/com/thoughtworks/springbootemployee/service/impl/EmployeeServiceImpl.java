@@ -26,10 +26,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.companyRepository = companyRepository;
     }
 
-    public Employee getSpecificEmployee(int id) {
-        return employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
-    }
-
     public void deleteEmployees(int id) {
         employeeRepository.deleteById(id);
     }
@@ -83,7 +79,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         }).collect(Collectors.toList());
     }
 
-    public EmployeeResponse getSpecificEmployee2(int id) {
-        return null;
+    public EmployeeResponse getSpecificEmployee(int id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
+        EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setId(employee.getId());
+        employeeResponse.setName(employee.getName());
+        employeeResponse.setGender(employee.getGender());
+        if (employee.getCompany() != null) {
+            employeeResponse.setCompanyName(employee.getCompany().getName());
+        }
+        return employeeResponse;
     }
 }

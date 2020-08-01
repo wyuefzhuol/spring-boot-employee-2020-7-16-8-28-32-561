@@ -11,7 +11,7 @@ import java.util.List;
 public interface EmployeeService {
     List<EmployeeResponse> getEmployees();
 
-    Employee getSpecificEmployee(int id);
+    EmployeeResponse getSpecificEmployee(int id);
 
     EmployeeResponse addEmployees(EmployeeRequest employeeRequest);
 

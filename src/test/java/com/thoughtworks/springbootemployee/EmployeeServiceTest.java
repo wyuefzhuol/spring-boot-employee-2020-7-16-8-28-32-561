@@ -111,7 +111,7 @@ public class EmployeeServiceTest {
         Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
 
         //when
-        EmployeeResponse employeeResponses = employeeService.getSpecificEmployee2(employeeId);
+        EmployeeResponse employeeResponses = employeeService.getSpecificEmployee(employeeId);
 
         //then
         assertEquals(employeeId, employeeResponses.getId());
