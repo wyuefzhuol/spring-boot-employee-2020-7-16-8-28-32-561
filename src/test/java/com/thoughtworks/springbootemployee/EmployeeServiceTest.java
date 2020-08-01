@@ -128,4 +128,21 @@ public class EmployeeServiceTest {
             employeeService.getSpecificEmployee(employeeId);
         });
     }
+
+    @Test
+    void should_return_male_employees_when_get_employee_by_gender_given_gender_is_male() {
+        //given
+        String gender = "male";
+        Employee maleEmployee = new Employee("Eric", "male", 18, null);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(maleEmployee);
+        Mockito.when(employeeRepository.findByGender(gender)).thenReturn(employees);
+
+        //when
+        List<EmployeeResponse> employeeResponses = employeeService.getEmployeesByGender(gender);
+
+        //then
+        assertEquals(1, employeeResponses.size());
+        assertEquals(maleEmployee, employeeResponses.get(0));
+    }
 }

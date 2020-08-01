@@ -90,4 +90,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return employeeResponse;
     }
+
+    public List<EmployeeResponse> getEmployeesByGender(String gender) {
+        return null;
+    }
 }
