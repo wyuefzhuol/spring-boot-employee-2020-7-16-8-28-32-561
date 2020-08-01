@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.Dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -23,8 +24,10 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
 
     private final EmployeeRepository employeeRepository;
-    @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, EmployeeRepository employeeRepository) {
+//    @Autowired
+//    private CompanyMapper companyMapper;
+
+    public CompanyServiceImpl(CompanyRepository companyRepository, EmployeeRepository employeeRepository, CompanyMapper companyMapper) {
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
     }
@@ -94,5 +97,15 @@ public class CompanyServiceImpl implements CompanyService {
             throw new CompanyNotFoundException();
         }
         companyRepository.delete(fetchedCompany.get());
+    }
+
+    public List<CompanyResponse> getAllCompanies2() {
+        List<CompanyResponse> companyResponses = new ArrayList<>();
+        CompanyMapper companyMapper = new CompanyMapper();
+        List<Company> companies = companyRepository.findAll();
+        for(Company companyEntity : companies){
+            companyResponses.add(companyMapper.companyToResponse(companyEntity));
+        }
+        return companyResponses;
     }
 }
