@@ -112,4 +112,21 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("name").value("Eric"))
                 .andExpect(jsonPath("companyName").value("oocl"));
     }
+
+    @Test
+    void should_return_0employee_when_delete_employee_given_1employee() throws Exception {
+        int companyId = 1;
+        Company company = new Company("oocl");
+        companyRepository.save(company);
+        Company companyWhichEmployeeWillJoin = companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
+        Employee employee = new Employee("Eric", "male", 18, companyWhichEmployeeWillJoin);
+        employeeRepository.save(employee);
+        mockMvc.perform(delete("/employees/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/employees")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
 }
