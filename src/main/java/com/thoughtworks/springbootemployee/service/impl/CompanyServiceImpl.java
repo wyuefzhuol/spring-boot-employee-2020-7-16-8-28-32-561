@@ -80,7 +80,7 @@ public class CompanyServiceImpl implements CompanyService {
         BeanUtils.copyProperties(companyRequest,company);
         companyRepository.save(company);
         CompanyResponse companyResponse = new CompanyResponse();
-        BeanUtils.copyProperties(companyRequest, companyResponse);
+        BeanUtils.copyProperties(company, companyResponse);
         return companyResponse;
     }
 }
