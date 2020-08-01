@@ -99,4 +99,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             return employeeResponse;
         }).collect(Collectors.toList());
     }
+
+    public EmployeeResponse updateEmployees2(EmployeeRequest employeeRequest) {
+        return null;
+    }
 }

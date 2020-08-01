@@ -145,4 +145,22 @@ public class EmployeeServiceTest {
         assertEquals(1, employeeResponses.size());
         assertEquals(maleEmployee, employeeResponses.get(0));
     }
+
+    @Test
+    void should_return_new_employee_when_update_employee_given_new_old_employee() {
+        //given
+        int companyId = 1, employeeId = 1;
+        Company company = new Company("oocl");
+        Employee employee = new Employee("Eric", "male", 20, company);
+        employee.setId(employeeId);
+        EmployeeRequest employeeRequest = new EmployeeRequest(employeeId, "Eric", "male", 20, companyId);
+        Mockito.when(companyRepository.findById(companyId)).thenReturn(Optional.of(company));
+        Mockito.when(employeeRepository.save(any())).thenReturn(employee);
+
+        //when
+        EmployeeResponse employeeResponse = employeeService.updateEmployees2(employeeRequest);
+
+        //then
+        assertEquals(employeeId, employeeResponse.getId());
+    }
 }

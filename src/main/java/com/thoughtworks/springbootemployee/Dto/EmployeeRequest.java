@@ -26,6 +26,14 @@ public class EmployeeRequest {
         this.companyId = companyId;
     }
 
+    public EmployeeRequest(int id, String name, String gender, int age, int companyId) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+        this.companyId = companyId;
+    }
+
     public int getId() {
         return id;
     }
