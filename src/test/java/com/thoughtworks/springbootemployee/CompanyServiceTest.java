@@ -5,6 +5,8 @@ import com.thoughtworks.springbootemployee.Dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.Dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.exception.GlobalException;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.service.impl.CompanyServiceImpl;
 import org.junit.jupiter.api.AfterEach;
@@ -19,8 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -35,21 +36,6 @@ public class CompanyServiceTest {
     @AfterEach
     public void tearDown(){
         companyRepository.deleteAll();
-    }
-
-    @Test
-    void should_return_specify_company_when_get_company_given_company_id() {
-        //given
-        int companyID = 1;
-        Company company = new Company();
-        company.setCompanyID(companyID);
-        Mockito.when(companyRepository.findById(companyID)).thenReturn(java.util.Optional.of(company));
-
-        //when
-        Company specifyCompany = companyService.getCompany(companyID);
-
-        //then
-        assertEquals(companyID, specifyCompany.getCompanyID());
     }
 
     @Test
@@ -94,5 +80,19 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(companyResponse.getName(), Optional.of(company).get().getName());
+    }
+
+    @Test
+    void should_return_success_when_delete_company_given_a_company_id() {
+        //given
+        int companyId = 1;
+        Company company = new Company();
+        Mockito.when(companyRepository.findById(companyId)).thenReturn(Optional.of(company));
+
+        //when
+        companyService.deleteCompanyById(companyId);
+
+        //then
+        assertDoesNotThrow(() ->companyService.deleteCompanyById(companyId));
     }
 }
