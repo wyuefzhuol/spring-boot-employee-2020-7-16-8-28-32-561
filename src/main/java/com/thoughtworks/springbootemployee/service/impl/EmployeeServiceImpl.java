@@ -75,8 +75,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeResponse.setGender(employeeResult.getGender());
             employeeResponse.setCompanyName(employeeResult.getCompany().getName());
             return employeeResponse;
-        } else {
-            return null;
         }
+        return null;
+    }
+
+    public List<EmployeeResponse> pagingQueryEmployees2(Pageable pageable) {
+        return null;
     }
 }

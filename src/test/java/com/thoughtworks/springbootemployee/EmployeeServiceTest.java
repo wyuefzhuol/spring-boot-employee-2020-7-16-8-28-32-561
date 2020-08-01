@@ -6,7 +6,6 @@ import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
-import com.thoughtworks.springbootemployee.service.impl.CompanyServiceImpl;
 import com.thoughtworks.springbootemployee.service.impl.EmployeeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,5 +81,24 @@ public class EmployeeServiceTest {
 
         //then
         assertNull(employeeResponse);
+    }
+
+    @Test
+    void should_return_employee_response_when_paging_query_employees_given_pageable() {
+        //given
+        List<Employee> employees = new ArrayList<>();
+        int page = 0, pageSize = 2;
+        for (int i = 0; i < 3; i++) {
+            employees.add(new Employee("Eric", "male", 18, null));
+        }
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Employee> employeesPage = new PageImpl<>(employees, pageable, employees.size());
+        Mockito.when(employeeRepository.findAll(pageable)).thenReturn(employeesPage);
+
+        //when
+        List<EmployeeResponse> employeeResponses = employeeService.pagingQueryEmployees2(pageable);
+
+        //then
+        assertEquals(pageSize, employeeResponses.size());
     }
 }
