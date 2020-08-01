@@ -5,7 +5,6 @@ import com.thoughtworks.springbootemployee.Dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
-import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -88,5 +86,13 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
         BeanUtils.copyProperties(company, companyResponse);
         return companyResponse;
+    }
+
+    public void deleteCompanyById(int companyId) {
+        Optional<Company> fetchedCompany = companyRepository.findById(companyId);
+        if (!fetchedCompany.isPresent()){
+            throw new CompanyNotFoundException();
+        }
+        companyRepository.delete(fetchedCompany.get());
     }
 }

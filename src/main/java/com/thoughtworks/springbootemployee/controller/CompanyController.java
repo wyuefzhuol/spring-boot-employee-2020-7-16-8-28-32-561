@@ -47,10 +47,10 @@ public class CompanyController {
         return companyService.addCompany(companyRequest);
     }
 
-//    @DeleteMapping("/companies/{id}")
-//    private void deleteTheCompanyAllInfo(@PathVariable("id") int id) {
-//        companyService.deleteTheCompanyAllInfo(id);
-//    }
+    @DeleteMapping("/companies/{id}")
+    private void deleteTheCompanyAllInfo(@PathVariable("id") int id) {
+        companyService.deleteCompanyById(id);
+    }
 
     @PutMapping("/companies")
     public void updateCompany(@RequestBody Company company) {
