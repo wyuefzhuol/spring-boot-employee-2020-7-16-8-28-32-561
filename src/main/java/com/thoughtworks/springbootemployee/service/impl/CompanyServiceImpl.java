@@ -36,10 +36,10 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.findAll();
     }
 
-    @Override
-    public Company getCompany(int id) {
-        return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
-    }
+//    @Override
+//    public Company getCompany(int id) {
+//        return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+//    }
 
     @Override
     public List<Employee> getAllEmployeesOfCompany(int id) {
@@ -58,15 +58,15 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.findAll(pageable).getContent();
     }
 
-    @Override
-    public void deleteTheCompanyAllInfo(int id) {
-        Company company = getCompany(id);
-        employeeRepository.findAll().stream()
-                .filter(employee -> employee.getCompany().getCompanyID()==company.getCompanyID())
-                .peek(employee -> employee.setCompany(null))
-                .collect(Collectors.toList());
-        companyRepository.deleteById(id);
-    }
+//    @Override
+//    public void deleteTheCompanyAllInfo(int id) {
+//        Company company = getSpecifyCompany(id);
+//        employeeRepository.findAll().stream()
+//                .filter(employee -> employee.getCompany().getCompanyID()==company.getCompanyID())
+//                .peek(employee -> employee.setCompany(null))
+//                .collect(Collectors.toList());
+//        companyRepository.deleteById(id);
+//    }
 
     @Override
     public void updateCompany(Company company) {
@@ -83,9 +83,9 @@ public class CompanyServiceImpl implements CompanyService {
         return companyResponse;
     }
 
-    public CompanyResponse getSpecifyCompany(int companId){
+    public CompanyResponse getSpecifyCompany(int id){
         CompanyResponse companyResponse = new CompanyResponse();
-        Company company = companyRepository.findById(companId).orElseThrow(CompanyNotFoundException::new);
+        Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
         BeanUtils.copyProperties(company, companyResponse);
         return companyResponse;
     }

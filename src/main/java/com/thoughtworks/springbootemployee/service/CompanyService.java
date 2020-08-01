@@ -13,7 +13,7 @@ public interface CompanyService {
 
     List<Company> getAllCompanies();
 
-    Company getCompany(int id);
+    CompanyResponse getSpecifyCompany(int id);
 
     List<Employee> getAllEmployeesOfCompany(int id);
 
@@ -21,7 +21,7 @@ public interface CompanyService {
 
     CompanyResponse addCompany(CompanyRequest companyRequest);
 
-    void deleteTheCompanyAllInfo(int id);
+//    void deleteTheCompanyAllInfo(int id);
 
     void updateCompany(Company company);
 }
