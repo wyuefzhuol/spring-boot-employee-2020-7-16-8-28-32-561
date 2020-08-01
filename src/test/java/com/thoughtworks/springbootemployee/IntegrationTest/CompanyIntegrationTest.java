@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.IntegrationTest;
 
 import com.jayway.jsonpath.JsonPath;
+import com.thoughtworks.springbootemployee.Dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -14,8 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,6 +28,11 @@ public class CompanyIntegrationTest {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @AfterEach
+    public void teardown(){
+        companyRepository.deleteAll();
+    }
 
     @Test
     void should_return_company_responses_when_get_companies_given_companies() throws Exception {
@@ -68,5 +73,20 @@ public class CompanyIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("tw"));
+    }
+
+    @Test
+    void should_return_200_when_delete_a_company_given_companyid() throws Exception {
+        //given
+        Company company = new Company("tw");
+        companyRepository.save(company);
+
+        //when
+        mockMvc.perform(delete("/companies/1"))
+                .andExpect(status().is2xxSuccessful());
+
+        //then
+        List<Company> companies = companyRepository.findAll();
+        assertEquals(0,companies.size());
     }
 }
