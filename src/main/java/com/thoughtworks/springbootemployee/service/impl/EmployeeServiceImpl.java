@@ -82,4 +82,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             return employeeResponse;
         }).collect(Collectors.toList());
     }
+
+    public EmployeeResponse getSpecificEmployee2(int id) {
+        return null;
+    }
 }

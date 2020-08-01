@@ -101,4 +101,19 @@ public class EmployeeServiceTest {
         //then
         assertEquals(pageSize, employeeResponses.size());
     }
+
+    @Test
+    void should_return_employee1_response_when_get_specific_employee_given_employee1() {
+        //given
+        int employeeId = 1;
+        Employee employee = new Employee("Eric", "male", 18, null);
+        employee.setId(employeeId);
+        Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+
+        //when
+        EmployeeResponse employeeResponses = employeeService.getSpecificEmployee2(employeeId);
+
+        //then
+        assertEquals(employeeId, employeeResponses.getId());
+    }
 }
