@@ -63,7 +63,7 @@ public class EmployeeServiceTest {
         EmployeeResponse employeeResponse = employeeService.addEmployees(employeeRequest);
 
         //then
-        assertNotNull(employeeResponse);
+        assertEquals(employee, employeeResponse);
     }
 
     @Test
