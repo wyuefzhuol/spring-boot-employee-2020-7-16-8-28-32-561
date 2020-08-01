@@ -81,13 +81,12 @@ public class CompanyServiceTest {
     void should_return_new_company_response_when_add_company_given_a_new_company() {
         //given
         Company company = new Company("tw");
-        Mockito.when(companyRepository.save(company)).thenReturn(company);
         CompanyRequest companyRequest = new CompanyRequest(1,"tw");
 
         //when
-        List<CompanyResponse> companyResponses = companyService.addCompany2(companyRequest);
+        CompanyResponse companyResponse = companyService.addCompany2(companyRequest);
 
         //then
-        assertNotNull(companyResponses);
+        assertNotNull(companyResponse);
     }
 }
