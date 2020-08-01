@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.Dto;
 
+import com.thoughtworks.springbootemployee.entity.Employee;
+
 public class EmployeeResponse {
     private int id;
     private String name;

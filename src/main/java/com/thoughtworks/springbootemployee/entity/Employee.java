@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thoughtworks.springbootemployee.Dto.EmployeeResponse;
 
 import javax.persistence.*;
 
@@ -69,5 +70,14 @@ public class Employee {
         this.gender = gender;
         this.age = age;
         this.company = company;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof EmployeeResponse) {
+            EmployeeResponse employee = (EmployeeResponse) obj;
+            return employee.getId() == this.id;
+        }
+        return false;
     }
 }

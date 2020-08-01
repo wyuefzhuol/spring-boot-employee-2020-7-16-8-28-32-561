@@ -47,6 +47,7 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(1, employeeResponses.size());
+        assertEquals(employee, employeeResponses.get(0));
     }
 
     @Test
