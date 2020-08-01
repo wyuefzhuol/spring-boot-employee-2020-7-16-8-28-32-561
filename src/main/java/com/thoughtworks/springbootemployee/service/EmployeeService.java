@@ -11,15 +11,15 @@ import java.util.List;
 public interface EmployeeService {
     List<EmployeeResponse> getEmployees();
 
-    Employee getSpecificEmployee(int id);
+    EmployeeResponse getSpecificEmployee(int id);
 
     EmployeeResponse addEmployees(EmployeeRequest employeeRequest);
 
     void deleteEmployees(int id);
 
-    List<Employee> getMaleEmployees(String gender);
+    List<EmployeeResponse> getEmployeesByGender(String gender);
 
-    void updateEmployees(Employee employee);
+    EmployeeResponse updateEmployee(EmployeeRequest employeeRequest);
 
-    Page<Employee> pagingQueryEmployees(Pageable pageable);
+    List<EmployeeResponse> pagingQueryEmployees(Pageable pageable);
 }

@@ -4,9 +4,10 @@ import com.thoughtworks.springbootemployee.Dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.Dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
-import com.thoughtworks.springbootemployee.service.impl.CompanyServiceImpl;
 import com.thoughtworks.springbootemployee.service.impl.EmployeeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +52,7 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(1, employeeResponses.size());
+        assertEquals(employee, employeeResponses.get(0));
     }
 
     @Test
@@ -62,7 +68,7 @@ public class EmployeeServiceTest {
         EmployeeResponse employeeResponse = employeeService.addEmployees(employeeRequest);
 
         //then
-        assertNotNull(employeeResponse);
+        assertEquals(employee, employeeResponse);
     }
 
     @Test
@@ -72,10 +78,89 @@ public class EmployeeServiceTest {
         EmployeeRequest employeeRequest = new EmployeeRequest("Eric", "male", 20, 1);
         Mockito.when(companyRepository.findById(1)).thenReturn(Optional.empty());
 
+        //then
+        assertThrows(CompanyNotFoundException.class, ()-> {
+            employeeService.addEmployees(employeeRequest);
+        });
+    }
+
+    @Test
+    void should_return_employee_response_when_paging_query_employees_given_pageable() {
+        //given
+        List<Employee> employees = new ArrayList<>();
+        int page = 0, pageSize = 2;
+        for (int i = 0; i < pageSize; i++) {
+            employees.add(new Employee("Eric", "male", 18, null));
+        }
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Employee> employeesPage = new PageImpl<>(employees, pageable, employees.size());
+        Mockito.when(employeeRepository.findAll(pageable)).thenReturn(employeesPage);
+
         //when
-        EmployeeResponse employeeResponse = employeeService.addEmployees(employeeRequest);
+        List<EmployeeResponse> employeeResponses = employeeService.pagingQueryEmployees(pageable);
 
         //then
-        assertNull(employeeResponse);
+        assertEquals(pageSize, employeeResponses.size());
+    }
+
+    @Test
+    void should_return_employee1_response_when_get_specific_employee_given_employee1() {
+        //given
+        int employeeId = 1;
+        Employee employee = new Employee("Eric", "male", 18, null);
+        employee.setId(employeeId);
+        Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+
+        //when
+        EmployeeResponse employeeResponses = employeeService.getSpecificEmployee(employeeId);
+
+        //then
+        assertEquals(employeeId, employeeResponses.getId());
+    }
+
+    @Test
+    void should_return_employee_not_found_exception_when_get_specific_employee_given_0employee() {
+        //given
+        int employeeId = 1;
+
+        //then
+        assertThrows(EmployeeNotFoundException.class, ()-> {
+            employeeService.getSpecificEmployee(employeeId);
+        });
+    }
+
+    @Test
+    void should_return_male_employees_when_get_employee_by_gender_given_gender_is_male() {
+        //given
+        String gender = "male";
+        Employee maleEmployee = new Employee("Eric", "male", 18, null);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(maleEmployee);
+        Mockito.when(employeeRepository.findByGender(gender)).thenReturn(employees);
+
+        //when
+        List<EmployeeResponse> employeeResponses = employeeService.getEmployeesByGender(gender);
+
+        //then
+        assertEquals(1, employeeResponses.size());
+        assertEquals(maleEmployee, employeeResponses.get(0));
+    }
+
+    @Test
+    void should_return_new_employee_when_update_employee_given_new_old_employee() {
+        //given
+        int companyId = 1, employeeId = 1;
+        Company company = new Company("oocl");
+        Employee employee = new Employee("Eric", "male", 20, company);
+        employee.setId(employeeId);
+        EmployeeRequest employeeRequest = new EmployeeRequest(employeeId, "Eric", "male", 20, companyId);
+        Mockito.when(companyRepository.findById(companyId)).thenReturn(Optional.of(company));
+        Mockito.when(employeeRepository.save(any())).thenReturn(employee);
+
+        //when
+        EmployeeResponse employeeResponse = employeeService.updateEmployee(employeeRequest);
+
+        //then
+        assertEquals(employeeId, employeeResponse.getId());
     }
 }

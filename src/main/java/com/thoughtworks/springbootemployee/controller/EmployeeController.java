@@ -19,7 +19,7 @@ public class EmployeeController {
     private EmployeeServiceImpl employeeServiceImpl;
 
     @GetMapping("/employees/{id}")
-    public Employee getSpecificEmployee(@PathVariable("id") int id) {
+    public EmployeeResponse getSpecificEmployee(@PathVariable("id") int id) {
         return employeeServiceImpl.getSpecificEmployee(id);
     }
 
@@ -34,8 +34,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/employees")
-    public void updateEmployees(@RequestBody Employee employee) {
-        employeeServiceImpl.updateEmployees(employee);
+    public EmployeeResponse updateEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        return employeeServiceImpl.updateEmployee(employeeRequest);
     }
 
     @GetMapping("/employees")
@@ -44,13 +44,13 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/employees", params = {"page","size"})
-    public List<Employee> pagingQueryEmployees(@PageableDefault(size = 2) Pageable pageable, @RequestParam(defaultValue = "false", required = false) boolean unpaged) {
-        return employeeServiceImpl.pagingQueryEmployees(pageable).getContent();
+    public List<EmployeeResponse> pagingQueryEmployees(@PageableDefault(size = 2) Pageable pageable) {
+        return employeeServiceImpl.pagingQueryEmployees(pageable);
     }
 
     @GetMapping(value = "/employees", params = "gender")
-    public List<Employee> getMaleEmployees(@RequestParam("gender") String gender){
-        return employeeServiceImpl.getMaleEmployees(gender);
+    public List<EmployeeResponse> getMaleEmployees(@RequestParam("gender") String gender){
+        return employeeServiceImpl.getEmployeesByGender(gender);
     }
 }
 
