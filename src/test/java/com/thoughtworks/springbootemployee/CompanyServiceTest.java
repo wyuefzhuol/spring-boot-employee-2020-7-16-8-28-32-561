@@ -7,6 +7,7 @@ import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.service.impl.CompanyServiceImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,6 +31,11 @@ public class CompanyServiceTest {
 
     @InjectMocks
     CompanyServiceImpl companyService;
+
+    @AfterEach
+    public void tearDown(){
+        companyRepository.deleteAll();
+    }
 
     @Test
     void should_return_specify_company_when_get_company_given_company_id() {
@@ -73,5 +80,19 @@ public class CompanyServiceTest {
 
         //then
         assertNotNull(companyResponse);
+    }
+
+    @Test
+    void should_return_specify_company_response_when_get_a_specify_company_given_a_company_id() {
+        //given
+        int companyID = 1;
+        Company company = new Company("tw");
+        Mockito.when(companyRepository.findById(companyID)).thenReturn(Optional.of(company));
+
+        //when
+        CompanyResponse companyResponse = companyService.getSpecifyCompany(companyID);
+
+        //then
+        assertEquals(companyResponse.getName(), Optional.of(company).get().getName());
     }
 }
