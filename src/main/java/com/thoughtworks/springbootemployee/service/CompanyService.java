@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Dto.CompanyRequest;
+import com.thoughtworks.springbootemployee.Dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import org.springframework.data.domain.Page;
@@ -17,7 +19,7 @@ public interface CompanyService {
 
     List<Company> pagingQueryCompanies(Pageable pageable);
 
-    boolean addCompany(Company company);
+    CompanyResponse addCompany(CompanyRequest companyRequest);
 
     void deleteTheCompanyAllInfo(int id);
 

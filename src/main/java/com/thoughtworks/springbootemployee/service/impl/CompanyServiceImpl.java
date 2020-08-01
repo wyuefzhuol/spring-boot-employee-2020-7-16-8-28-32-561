@@ -60,12 +60,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public boolean addCompany(Company company) {
-        companyRepository.save(company);
-        return true;
-    }
-
-    @Override
     public void deleteTheCompanyAllInfo(int id) {
         Company company = getCompany(id);
         employeeRepository.findAll().stream()
@@ -81,13 +75,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-    public CompanyResponse addCompany2(CompanyRequest companyRequest) {
+    public CompanyResponse addCompany(CompanyRequest companyRequest) {
         Company company = new Company();
         BeanUtils.copyProperties(companyRequest,company);
         companyRepository.save(company);
         CompanyResponse companyResponse = new CompanyResponse();
         BeanUtils.copyProperties(companyRequest, companyResponse);
         return companyResponse;
-
     }
 }

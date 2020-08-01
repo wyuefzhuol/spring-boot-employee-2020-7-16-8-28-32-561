@@ -46,21 +46,6 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_true_when_add_a_company_given_a_company() {
-        //given
-        int companyId = 1;
-        Company company = new Company();
-        company.setCompanyID(companyId);
-        Mockito.when(companyRepository.save(company)).thenReturn(company);
-
-        //when
-        boolean result = companyService.addCompany(company);
-
-        //then
-        assertEquals(true, result);
-    }
-
-    @Test
     void should_return_companies_when_get_all_companies_given_a_company_repository() {
         //given
         List<Company> companies = new ArrayList<>();
@@ -84,7 +69,7 @@ public class CompanyServiceTest {
         CompanyRequest companyRequest = new CompanyRequest(1,"tw");
 
         //when
-        CompanyResponse companyResponse = companyService.addCompany2(companyRequest);
+        CompanyResponse companyResponse = companyService.addCompany(companyRequest);
 
         //then
         assertNotNull(companyResponse);
