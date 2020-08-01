@@ -30,10 +30,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    public List<Employee> getMaleEmployees(String gender) {
-        return employeeRepository.findByGender(gender);
-    }
-
     public void updateEmployees(Employee employee) {
         employeeRepository.save(employee);
     }
@@ -92,6 +88,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public List<EmployeeResponse> getEmployeesByGender(String gender) {
-        return null;
+        return employeeRepository.findByGender(gender).stream().map(employee -> {
+            EmployeeResponse employeeResponse = new EmployeeResponse();
+            employeeResponse.setId(employee.getId());
+            employeeResponse.setName(employee.getName());
+            employeeResponse.setGender(employee.getGender());
+            if (employee.getCompany() != null) {
+                employeeResponse.setCompanyName(employee.getCompany().getName());
+            }
+            return employeeResponse;
+        }).collect(Collectors.toList());
     }
 }
