@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.Dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.Dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.impl.EmployeeServiceImpl;
@@ -76,11 +77,10 @@ public class EmployeeServiceTest {
         EmployeeRequest employeeRequest = new EmployeeRequest("Eric", "male", 20, 1);
         Mockito.when(companyRepository.findById(1)).thenReturn(Optional.empty());
 
-        //when
-        EmployeeResponse employeeResponse = employeeService.addEmployees(employeeRequest);
-
         //then
-        assertNull(employeeResponse);
+        assertThrows(CompanyNotFoundException.class, ()-> {
+            employeeService.addEmployees(employeeRequest);
+        });
     }
 
     @Test

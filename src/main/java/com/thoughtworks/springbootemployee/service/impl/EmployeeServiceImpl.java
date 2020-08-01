@@ -9,13 +9,10 @@ import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,8 +25,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeRepository = employeeRepository;
         this.companyRepository = companyRepository;
     }
-
-    private List<Employee> employees = new ArrayList<>();
 
     public Employee getSpecificEmployee(int id) {
         return employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
@@ -61,21 +56,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public EmployeeResponse addEmployees(EmployeeRequest employeeRequest) {
-        Optional<Company> company = companyRepository.findById(employeeRequest.getCompanyId());
-        if (company.isPresent()) {
-            Employee employee = new Employee();
-            employee.setName(employeeRequest.getName());
-            employee.setGender(employeeRequest.getGender());
-            employee.setAge(employeeRequest.getAge());
-            employee.setCompany(company.get());
-            Employee employeeResult = employeeRepository.save(employee);
-            EmployeeResponse employeeResponse = new EmployeeResponse();
-            employeeResponse.setName(employeeResult.getName());
-            employeeResponse.setGender(employeeResult.getGender());
-            employeeResponse.setCompanyName(employeeResult.getCompany().getName());
-            return employeeResponse;
-        }
-        return null;
+        Company company = companyRepository.findById(employeeRequest.getCompanyId()).orElseThrow(CompanyNotFoundException::new);
+        Employee employee = new Employee();
+        employee.setName(employeeRequest.getName());
+        employee.setGender(employeeRequest.getGender());
+        employee.setAge(employeeRequest.getAge());
+        employee.setCompany(company);
+        Employee employeeResult = employeeRepository.save(employee);
+        EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setName(employeeResult.getName());
+        employeeResponse.setGender(employeeResult.getGender());
+        employeeResponse.setCompanyName(employeeResult.getCompany().getName());
+        return employeeResponse;
     }
 
     public List<EmployeeResponse> pagingQueryEmployees(Pageable pageable) {
