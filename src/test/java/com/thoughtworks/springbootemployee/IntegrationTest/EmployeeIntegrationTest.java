@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.IntegrationTest;
 
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.util.ConstantInterface;
@@ -41,5 +42,20 @@ public class EmployeeIntegrationTest {
                 .content(ConstantInterface.EMPLOYEE_REQUEST_JSON_PAY))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("Eric"));
+    }
+
+    @Test
+    void should_return_employee_responses_when_get_employees_given_employees() throws Exception {
+        int companyId = 1;
+        Company company = new Company("oocl");
+        companyRepository.save(company);
+        Company companyWhichEmployeeWillJoin = companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
+        Employee employee = new Employee("Eric", "male", 18, companyWhichEmployeeWillJoin);
+        employeeRepository.save(employee);
+        mockMvc.perform(get("/employees")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("[0].name").value("Eric"))
+                .andExpect(jsonPath("[0].companyName").value("oocl"));
     }
 }
