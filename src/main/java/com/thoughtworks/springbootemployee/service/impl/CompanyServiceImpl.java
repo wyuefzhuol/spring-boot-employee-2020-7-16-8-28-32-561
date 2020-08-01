@@ -25,7 +25,6 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
 
     private final EmployeeRepository employeeRepository;
-
     @Autowired
     public CompanyServiceImpl(CompanyRepository companyRepository, EmployeeRepository employeeRepository) {
         this.companyRepository = companyRepository;
@@ -80,6 +79,13 @@ public class CompanyServiceImpl implements CompanyService {
         BeanUtils.copyProperties(companyRequest,company);
         companyRepository.save(company);
         CompanyResponse companyResponse = new CompanyResponse();
+        BeanUtils.copyProperties(company, companyResponse);
+        return companyResponse;
+    }
+
+    public CompanyResponse getSpecifyCompany(int companId){
+        CompanyResponse companyResponse = new CompanyResponse();
+        Company company = companyRepository.findById(companId).orElseThrow(CompanyNotFoundException::new);
         BeanUtils.copyProperties(company, companyResponse);
         return companyResponse;
     }
