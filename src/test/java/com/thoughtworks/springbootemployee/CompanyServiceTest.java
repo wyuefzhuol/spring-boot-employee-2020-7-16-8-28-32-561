@@ -95,4 +95,19 @@ public class CompanyServiceTest {
         //then
         assertDoesNotThrow(() ->companyService.deleteCompanyById(companyId));
     }
+
+    @Test
+    void should_return_company_responses_when_get_all_companies() {
+        //given
+        Company company = new Company("tw");
+        List<Company> companies = new ArrayList<>();
+        companies.add(company);
+        Mockito.when(companyRepository.findAll()).thenReturn(companies);
+
+        //when
+        List<CompanyResponse> companyResponses = companyService.getAllCompanies2();
+
+        //then
+        assertEquals(companies.size(),companyResponses.size());
+    }
 }
