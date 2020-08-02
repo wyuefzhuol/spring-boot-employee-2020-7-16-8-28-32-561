@@ -108,4 +108,22 @@ public class CompanyServiceTest {
         //then
         assertNotNull(newCompanyResponse);
     }
+
+    @Test
+    void should_return_all_employees_responses_when_get_all_employees_by_company_id_given_a_company_id() {
+        //given
+        int companyId = 1;
+        Company company = new Company("oocl");
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee("alice", "female", 18, company));
+        company.setEmployeeList(employees);
+        Mockito.when(companyRepository.findById(companyId)).thenReturn(Optional.of(company));
+
+        //when
+        List<EmployeeResponse> employeeResponses = companyService.getAllEmployeesByCompanyId(companyId);
+
+        //then
+        assertNotNull(employeeResponses);
+        assertEquals(employees.size(),employeeResponses.size());
+    }
 }
