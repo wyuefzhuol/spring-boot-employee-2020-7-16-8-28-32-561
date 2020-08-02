@@ -35,11 +35,11 @@ public class CompanyController {
     }
 
     @GetMapping("/companies")
-    private List<Company> queryCompanies(@PageableDefault(size = 2) Pageable pageable,@RequestParam(defaultValue = "false",required = false) boolean unpaged) {
-        if(unpaged){
+    private List<CompanyResponse> queryCompanies(@PageableDefault(size = 2) Pageable pageable,@RequestParam(defaultValue = "false",required = false) boolean unpaged) {
+//        if(unpaged){
             return companyService.getAllCompanies();
-        }
-        return companyService.pagingQueryCompanies(pageable);
+//        }
+//        return companyService.pagingQueryCompanies(pageable);
     }
 
     @PostMapping("/companies")

@@ -39,23 +39,6 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_companies_when_get_all_companies_given_a_company_repository() {
-        //given
-        List<Company> companies = new ArrayList<>();
-        for(int index = 0; index < 2; index++){
-            companies.add(new Company());
-        }
-        Mockito.when(companyRepository.findAll()).thenReturn(companies);
-
-        //when
-        List<Company> companiesReslut = companyService.getAllCompanies();
-
-        //then
-        assertEquals(companies, companiesReslut);
-
-    }
-
-    @Test
     void should_return_new_company_response_when_add_company_given_a_new_company() {
         //given
         Company company = new Company("tw");
@@ -105,7 +88,7 @@ public class CompanyServiceTest {
         Mockito.when(companyRepository.findAll()).thenReturn(companies);
 
         //when
-        List<CompanyResponse> companyResponses = companyService.getAllCompanies2();
+        List<CompanyResponse> companyResponses = companyService.getAllCompanies();
 
         //then
         assertEquals(companies.size(),companyResponses.size());

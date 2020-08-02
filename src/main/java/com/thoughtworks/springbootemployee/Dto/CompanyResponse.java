@@ -1,23 +1,23 @@
 package com.thoughtworks.springbootemployee.Dto;
 
 public class CompanyResponse {
-    int id;
+    int companyID;
     String name;
 
     public CompanyResponse() {
     }
 
-    public CompanyResponse(int id, String name) {
-        this.id = id;
+    public CompanyResponse(int companyID, String name) {
+        this.companyID = companyID;
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public int getCompanyID() {
+        return companyID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCompanyID(int companyID) {
+        this.companyID = companyID;
     }
 
     public String getName() {

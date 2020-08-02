@@ -33,16 +33,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getAllCompanies() {
-        return companyRepository.findAll();
-    }
-
-//    @Override
-//    public Company getCompany(int id) {
-//        return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
-//    }
-
-    @Override
     public List<Employee> getAllEmployeesOfCompany(int id) {
 //        Company company = getCompany(id);
 //        return company.getEmployeeList();
@@ -58,16 +48,6 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Company> pagingQueryCompanies(Pageable pageable) {
         return companyRepository.findAll(pageable).getContent();
     }
-
-//    @Override
-//    public void deleteTheCompanyAllInfo(int id) {
-//        Company company = getSpecifyCompany(id);
-//        employeeRepository.findAll().stream()
-//                .filter(employee -> employee.getCompany().getCompanyID()==company.getCompanyID())
-//                .peek(employee -> employee.setCompany(null))
-//                .collect(Collectors.toList());
-//        companyRepository.deleteById(id);
-//    }
 
     @Override
     public void updateCompany(Company company) {
@@ -99,7 +79,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyRepository.delete(fetchedCompany.get());
     }
 
-    public List<CompanyResponse> getAllCompanies2() {
+    public List<CompanyResponse> getAllCompanies() {
         List<CompanyResponse> companyResponses = new ArrayList<>();
         CompanyMapper companyMapper = new CompanyMapper();
         List<Company> companies = companyRepository.findAll();

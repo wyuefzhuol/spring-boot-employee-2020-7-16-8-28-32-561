@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CompanyService {
 
-    List<Company> getAllCompanies();
+    List<CompanyResponse> getAllCompanies();
 
     CompanyResponse getSpecifyCompany(int id);
 
@@ -21,7 +21,7 @@ public interface CompanyService {
 
     CompanyResponse addCompany(CompanyRequest companyRequest);
 
-//    void deleteTheCompanyAllInfo(int id);
+    void deleteCompanyById(int companyId);
 
     void updateCompany(Company company);
 }
