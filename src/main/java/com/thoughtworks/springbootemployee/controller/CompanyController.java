@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.Dto.CompanyRequest;
 import com.thoughtworks.springbootemployee.Dto.CompanyResponse;
+import com.thoughtworks.springbootemployee.Dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.service.impl.CompanyServiceImpl;
@@ -30,8 +31,8 @@ public class CompanyController {
     }
 
     @GetMapping("/companies/{id}/employees")
-    private List<Employee> getAllEmployeesOfCompany(@PathVariable("id") int id) {
-        return companyService.getAllEmployeesOfCompany(id);
+    private List<EmployeeResponse> getAllEmployeesOfCompany(@PathVariable("id") int id) {
+        return companyService.getAllEmployeesByCompanyId(id);
     }
 
     @GetMapping("/companies")
