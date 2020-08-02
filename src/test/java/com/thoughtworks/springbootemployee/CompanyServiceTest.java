@@ -93,4 +93,20 @@ public class CompanyServiceTest {
         //then
         assertEquals(companies.size(),companyResponses.size());
     }
+
+    @Test
+    void should_return_a_new_company_response_when_update_company_given_a_new_company_request_and_old_company() {
+        //given
+        int companyId = 1;
+        Company oldCompany = new Company("tw");
+        CompanyRequest newCompanyRequest = new CompanyRequest(companyId,"oocl");
+        Mockito.when(companyRepository.findById(companyId)).thenReturn(Optional.of(oldCompany));
+
+        //when
+        CompanyResponse newCompanyResponse = companyService.updateCompany2(companyId, newCompanyRequest);
+
+        //then
+        assertNotNull(newCompanyResponse);
+        assertEquals("oocl", newCompanyResponse.getName());
+    }
 }
