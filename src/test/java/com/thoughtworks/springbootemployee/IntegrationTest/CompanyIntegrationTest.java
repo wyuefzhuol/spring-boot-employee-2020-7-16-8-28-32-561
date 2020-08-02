@@ -6,6 +6,7 @@ import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import com.thoughtworks.springbootemployee.util.ConstantInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -55,12 +56,9 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_new_company_when_add_company_given_new_company() throws Exception {
         //given
-        String companyRequestJsonPay = "{\n" +
-                "        \"name\": \"tw\"\n" +
-                "    }";
         mockMvc.perform(post("/companies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(companyRequestJsonPay))
+                .content(ConstantInterface.COMPANY_REQUEST_JSON_PAY))
                 .andExpect(status().isOk());
 
         //when
@@ -108,5 +106,19 @@ public class CompanyIntegrationTest {
         mockMvc.perform(get("/companies/"+ company.getCompanyID() +"/employees")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_return_a_new_company_response_when_update_company_given_a_old_compny_and_request_company() throws Exception {
+        //given
+        Company company = companyRepository.save(new Company("tw"));
+
+        //when
+        mockMvc.perform(put("/companies/" + company.getCompanyID())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ConstantInterface.NEW_COMPANY_REQUEST_JSON_PAY))
+                .andExpect(status().isOk());
+        //then
+        assertEquals("oocl",companyRepository.findAll().get(1).getName());
     }
 }

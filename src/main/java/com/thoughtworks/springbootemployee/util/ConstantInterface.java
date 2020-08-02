@@ -14,4 +14,10 @@ public interface ConstantInterface {
             "    \"age\": \"18\",\n" +
             "    \"companyId\": \"2\"\n" +
             "}";
+    String COMPANY_REQUEST_JSON_PAY = "{\n" +
+            "        \"name\": \"tw\"\n" +
+            "    }";
+    String NEW_COMPANY_REQUEST_JSON_PAY = "{\n" +
+            "        \"name\": \"oocl\"\n" +
+            "    }";
 }
