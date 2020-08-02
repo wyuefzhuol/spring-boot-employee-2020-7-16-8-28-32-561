@@ -35,11 +35,6 @@ public class CompanyServiceImpl implements CompanyService {
         this.employeeRepository = employeeRepository;
     }
 
-    @Override
-    public List<Company> pagingQueryCompanies(Pageable pageable) {
-        return companyRepository.findAll(pageable).getContent();
-    }
-
     public CompanyResponse addCompany(CompanyRequest companyRequest) {
         Company company = new Company();
         BeanUtils.copyProperties(companyRequest,company);
@@ -103,7 +98,7 @@ public class CompanyServiceImpl implements CompanyService {
         }).collect(Collectors.toList());
     }
 
-    public List<CompanyResponse> pagingQueryCompanies2(Pageable pageable) {
+    public List<CompanyResponse> pagingQueryCompanies(Pageable pageable) {
         CompanyMapper companyMapper = new CompanyMapper();
         List<CompanyResponse> companyResponses = new ArrayList<>();
         List<Company> companies = companyRepository.findAll(pageable).getContent();

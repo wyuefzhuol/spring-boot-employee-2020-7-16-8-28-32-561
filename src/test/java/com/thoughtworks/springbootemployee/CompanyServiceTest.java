@@ -145,7 +145,7 @@ public class CompanyServiceTest {
         Mockito.when(companyRepository.findAll(pageable)).thenReturn(companyPage);
 
         //when
-        List<CompanyResponse> companyResponses = companyService.pagingQueryCompanies2(pageable);
+        List<CompanyResponse> companyResponses = companyService.pagingQueryCompanies(pageable);
 
         //then
         assertEquals(pagesize, companyResponses.size());

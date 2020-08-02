@@ -16,10 +16,9 @@ public interface CompanyService {
 
     CompanyResponse getSpecifyCompany(int id);
 
-//    List<Employee> getAllEmployeesOfCompany(int id);
     List<EmployeeResponse> getAllEmployeesByCompanyId(int companyId);
 
-    List<Company> pagingQueryCompanies(Pageable pageable);
+    List<CompanyResponse> pagingQueryCompanies(Pageable pageable);
 
     CompanyResponse addCompany(CompanyRequest companyRequest);
 
