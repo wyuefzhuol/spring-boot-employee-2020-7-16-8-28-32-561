@@ -35,28 +35,10 @@ public class CompanyServiceImpl implements CompanyService {
         this.employeeRepository = employeeRepository;
     }
 
-//    @Override
-//    public List<Employee> getAllEmployeesOfCompany(int id) {
-////        Company company = getCompany(id);
-////        return company.getEmployeeList();
-//        Optional<Company> byId = companyRepository.findById(id);
-//        if(byId.isPresent()){
-//            return byId.get().getEmployeeList();
-//        }else {
-//            return new ArrayList<>();
-//        }
-//    }
-
     @Override
     public List<Company> pagingQueryCompanies(Pageable pageable) {
         return companyRepository.findAll(pageable).getContent();
     }
-
-//    @Override
-//    public void updateCompany(Company company) {
-//        companyRepository.save(company);
-//    }
-
 
     public CompanyResponse addCompany(CompanyRequest companyRequest) {
         Company company = new Company();
