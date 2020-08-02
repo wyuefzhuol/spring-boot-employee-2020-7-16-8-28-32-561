@@ -8,17 +8,25 @@ import javax.validation.constraints.Size;
 
 @Validated
 public class CompanyRequest {
-    int id;
+    int companyID;
     @NotBlank
     @Size(min = 1, max = 20)
     String name;
 
-    public int getId() {
-        return id;
+    public CompanyRequest() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public CompanyRequest(int companyID, @NotBlank @Size(min = 1, max = 20) String name) {
+        this.companyID = companyID;
+        this.name = name;
+    }
+
+    public int getCompanyID() {
+        return companyID;
+    }
+
+    public void setCompanyID(int companyID) {
+        this.companyID = companyID;
     }
 
     public String getName() {
@@ -27,14 +35,5 @@ public class CompanyRequest {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public CompanyRequest(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public CompanyRequest() {
-
     }
 }

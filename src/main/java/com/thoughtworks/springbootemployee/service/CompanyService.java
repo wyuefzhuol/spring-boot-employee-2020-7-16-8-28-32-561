@@ -23,5 +23,5 @@ public interface CompanyService {
 
     void deleteCompanyById(int companyId);
 
-    void updateCompany(Company company);
+    CompanyResponse updateCompany2(int id, CompanyRequest companyRequest);
 }
