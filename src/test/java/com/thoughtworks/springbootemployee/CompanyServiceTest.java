@@ -16,6 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,5 +129,25 @@ public class CompanyServiceTest {
         //then
         assertNotNull(employeeResponses);
         assertEquals(employees.size(),employeeResponses.size());
+    }
+
+    @Test
+    void should_return_company_response_when_paging_query_companies_given_page_and_pagesize() {
+        //given
+        List<Company> companies = new ArrayList<>();
+        int page = 1;
+        int pagesize = 2;
+        for(int i = 0; i < pagesize; i++){
+            companies.add(new Company("tw"));
+        }
+        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, pagesize);
+        Page<Company> companyPage = new PageImpl<>(companies, pageable, companies.size());
+        Mockito.when(companyRepository.findAll(pageable)).thenReturn(companyPage);
+
+        //when
+        List<CompanyResponse> companyResponses = companyService.pagingQueryCompanies2(pageable);
+
+        //then
+        assertEquals(pagesize, companyResponses.size());
     }
 }
