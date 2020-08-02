@@ -49,10 +49,10 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.findAll(pageable).getContent();
     }
 
-    @Override
-    public void updateCompany(Company company) {
-        companyRepository.save(company);
-    }
+//    @Override
+//    public void updateCompany(Company company) {
+//        companyRepository.save(company);
+//    }
 
 
     public CompanyResponse addCompany(CompanyRequest companyRequest) {
@@ -87,5 +87,16 @@ public class CompanyServiceImpl implements CompanyService {
             companyResponses.add(companyMapper.companyToResponse(companyEntity));
         }
         return companyResponses;
+    }
+
+    public CompanyResponse updateCompany2(int companyId, CompanyRequest newCompanyRequest) {
+        CompanyMapper companyMapper = new CompanyMapper();
+        Optional<Company> company = companyRepository.findById(companyId);
+        if(!company.isPresent()){
+            throw new CompanyNotFoundException();
+        }
+        Company newCompany = companyMapper.requestToCompany(newCompanyRequest);
+        companyRepository.save(newCompany);
+        return companyMapper.companyToResponse(newCompany);
     }
 }
