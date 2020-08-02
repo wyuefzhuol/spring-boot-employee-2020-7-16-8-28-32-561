@@ -107,6 +107,5 @@ public class CompanyServiceTest {
 
         //then
         assertNotNull(newCompanyResponse);
-        assertEquals("oocl", newCompanyResponse.getName());
     }
 }
