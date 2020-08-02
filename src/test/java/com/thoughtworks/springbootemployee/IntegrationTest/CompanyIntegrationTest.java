@@ -3,15 +3,20 @@ package com.thoughtworks.springbootemployee.IntegrationTest;
 import com.jayway.jsonpath.JsonPath;
 import com.thoughtworks.springbootemployee.Dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.entity.Company;
+import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,6 +33,9 @@ public class CompanyIntegrationTest {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @AfterEach
     public void teardown(){
@@ -67,9 +75,8 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_a_specific_company_when_get_specific_company_given_a_company_id() throws Exception {
         //given
-        Company company = new Company("tw");
-        companyRepository.save(company);
-        mockMvc.perform(get("/companies/1")
+        Company company = companyRepository.save(new Company("tw"));
+        mockMvc.perform(get(String.format("/companies/%d", company.getCompanyID()))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("tw"));
@@ -88,5 +95,18 @@ public class CompanyIntegrationTest {
         //then
         List<Company> companies = companyRepository.findAll();
         assertEquals(0,companies.size());
+    }
+
+    @Test
+    void should_return_employees_response_by_companyId_when_get_all_employees_by_company_id_given_a_company_id() throws Exception {
+        //given
+        Company company = companyRepository.save(new Company("tw"));
+        Employee employee = new Employee("Alice", "female", 18, company);
+        employeeRepository.save(employee);
+
+        //when
+        mockMvc.perform(get("/companies/"+ company.getCompanyID() +"/employees")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
