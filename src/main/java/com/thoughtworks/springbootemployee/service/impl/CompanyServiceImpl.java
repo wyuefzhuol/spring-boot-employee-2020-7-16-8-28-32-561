@@ -102,4 +102,14 @@ public class CompanyServiceImpl implements CompanyService {
             return employeeResponse;
         }).collect(Collectors.toList());
     }
+
+    public List<CompanyResponse> pagingQueryCompanies2(Pageable pageable) {
+        CompanyMapper companyMapper = new CompanyMapper();
+        List<CompanyResponse> companyResponses = new ArrayList<>();
+        List<Company> companies = companyRepository.findAll(pageable).getContent();
+        for(Company company: companies){
+            companyResponses.add(companyMapper.companyToResponse(company));
+        }
+        return companyResponses;
+    }
 }
